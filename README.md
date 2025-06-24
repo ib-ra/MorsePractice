@@ -15,4 +15,4 @@ It allows users to listen to Morse code generated from a list of common English 
 ## 
 The vocabulary list for this project is derived from:
   https://github.com/googlecreativelab/morse-learn
-  Licensed under the Apache License, Version 2.0
+Licensed under the Apache License, Version 2.0
