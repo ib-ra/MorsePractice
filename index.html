@@ -221,14 +221,30 @@
     }
 
     button.next-button {
-      background: linear-gradient(145deg, var(--primary-blue), var(--secondary-blue));
+      background: linear-gradient(145deg, #6C63FF, #8B7EFF);
       color: var(--white);
-      box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+      box-shadow: 0 6px 15px rgba(108, 99, 255, 0.3);
       border: none;
+      position: relative;
+      overflow: hidden;
     }
     button.next-button:hover {
-      background: linear-gradient(145deg, var(--secondary-blue), #5DAAF4);
-      box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+      background: linear-gradient(145deg, #8B7EFF, #A59BFF);
+      box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    button.next-button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    button.next-button:hover:before {
+      left: 100%;
     }
 
     button.check-button {
@@ -346,7 +362,7 @@
       <div class="card" id="wordCard">WORD</div>
 
       <div class="button-group-vertical">
-        <button onclick="nextWord()" class="next-button">➡️ Next Word</button>
+        <button onclick="showHint()" class="hint-button">💡 Show Hint</button>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
           <input type="number" id="gotoInput" placeholder="#" min="1" />
           <button onclick="goToWord()">📍 Go To Word</button>
@@ -362,7 +378,8 @@
       <button onclick="addSymbol('-')">– Dash</button>
       <button onclick="clearInput()" class="clear-button">🧹 Clear Input</button>
       <button onclick="checkAnswer()" class="check-button">✅ Check Answer</button>
-      <button onclick="showHint()" class="hint-button">💡 Show Hint</button>
+      <button onclick="nextWord()" class="next-button">➡️ Next Word</button>
+
     </div>
   </div>
   <div class="name-badge">Ib-ra</div>
@@ -371,38 +388,6 @@
   <script>
     const words = [
     "eat", "tea", "ate", "tie", "tai", "tei", "ait", "mat", "met", "team",
-    "mate", "meet", "mitt", "meat", "aim", "tame", "same", "sat", "sit", "set",
-    "steam", "teams", "meats", "meets", "mates", "mats", "ties", "eats", "aims", "some",
-    "toss", "time", "mom", "sometimes", "osmosis", "moss", "moose", "tomato", "home", "hot",
-    "hat", "ham", "shoot", "shot", "mosh", "mash", "stash", "hash", "home", "homes",
-    "moth", "math", "the", "son", "nose", "net", "not", "note", "tent", "someone",
-    "mint", "hint", "stone", "moan", "honest", "cat", "come", "can", "mathematics", "sonic",
-    "tonic", "chase", "match", "hatch", "mooch", "notch", "cash", "car", "rat", "rice",
-    "ear", "racecar", "ran", "cram", "crash", "harm", "monitor", "roam", "runner", "rutter",
-    "hotter", "dad", "date", "dot", "dash", "crashed", "honed", "minted", "diminish", "credit",
-    "honored", "crush", "minute", "dust", "crust", "crusade", "crude", "dock", "make", "rock",
-    "ruckus", "crude", "kook", "rookie", "duck", "crudite", "hunk", "think", "shock", "lake",
-    "let", "land", "lose", "small", "lost", "clock", "lock", "luck", "lunch", "drool",
-    "loud", "angel", "angle", "llama", "fake", "fat", "fun", "fur", "fast", "fluff",
-    "fluke", "flustered", "ruffle", "duffle", "bat", "ball", "but", "black", "blast", "back",
-    "backside", "curb", "basketball", "baseball", "ballet", "bottle", "bumble", "babble", "better", "rumble",
-    "pet", "pal", "help", "up", "plaster", "crumple", "postmark", "pretend", "pub", "lump",
-    "bump", "dump", "hump", "prescribed", "great", "get", "game", "gain", "dog", "big",
-    "gaping", "paging", "page", "baggage", "package", "rampage", "jump", "jet", "juggle", "jacket",
-    "jaguar", "japan", "jam", "jetpack", "jungle", "van", "vet", "vacuum", "vacant", "pave",
-    "vampire", "volcano", "question", "quick", "quit", "quilt", "quadratic", "quantum", "quaint", "query",
-    "quail", "squat", "squad", "equal", "with", "water", "wear", "what", "weather", "jaw",
-    "paw", "weekend", "week", "wave", "waffle", "guffaw", "beeswax", "wax", "tax", "apex",
-    "axel", "flax", "jinx", "boxed", "boxer", "toxic", "detox", "exile", "exit", "very",
-    "yes", "jelly", "jellyfish", "walkway", "yesterday", "zipper", "zebra", "dizzy", "graze", "zesty",
-    "razer", "brazil", "zone", "jazz", "zero", "tee", "tie", "it", "ite", "eit",
-    "mat", "met", "team", "mate", "meet", "mitt", "meat", "aim", "tame", "mime",
-    "item", "me", "meta", "time", "same", "sat", "sit", "set", "steam", "teams",
-    "seem", "seam", "aims", "eats", "miss", "mist", "esteem", "steer", "seat", "some",
-    "toss", "time", "mom", "sometimes", "osmosis", "moss", "moose", "tomato", "too", "to",
-    "so", "soot", "moot", "moat", "miso", "home", "hot", "hat", "ham", "shoot",
-    "shot", "mosh", "mash", "stash", "hash", "home", "homes", "moth", "math", "host",
-    "teeth", "seethe", "hoot", "hoist", "heist", "haste", "soothe", "oh", "the", "son",
     "nose", "net", "not", "note", "tent", "someone"
   ];
     const morseCode = {
