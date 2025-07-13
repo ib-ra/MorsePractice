@@ -1,35 +1,74 @@
-<!DOCTYPE html>
+  <div class="version-badge">v2</div>
+  
+  <div class="author-badge">
+    <a href="https://github.com/ib-ra/MorsePractice" class="author-link" target="_blank" rel="noopener">
+      <span>👨‍💻</span>
+      <span>ib-ra</span>
+    </a>
+  </div><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Morse Code Practice</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
-      --primary-blue: #4A90E2;
-      --secondary-blue: #70B3F7;
-      --light-bg: #F0F4F8;
-      --dark-text: #333D4F;
-      --medium-text: #5B6A7F;
-      --light-border: #D1D9E6;
-      --white: #FFFFFF;
-      --shadow-light: rgba(0, 0, 0, 0.08);
-      --shadow-medium: rgba(0, 0, 0, 0.15);
-      --correct-green: #28a745;
-      --incorrect-red: #dc3545;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --info: #06b6d4;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-accent: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --border-focus: #cbd5e1;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 0.75rem;
+      --radius-sm: 0.5rem;
     }
 
     body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, var(--light-bg) 0%, var(--primary-blue) 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
       min-height: 100vh;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      color: var(--text-primary);
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .header {
       text-align: center;
-      margin: 0;
-      color: var(--dark-text);
-      overflow-x: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.025em;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
     }
 
     .version-badge {
@@ -47,10 +86,10 @@
       box-shadow: 0 4px 10px var(--shadow-light);
     }
 
-    .name-badge {
+    .author-badge {
       position: absolute;
-      bottom: 25px;
-      right: 25px;
+      top: 25px;
+      left: 25px;
       background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.35);
@@ -62,334 +101,482 @@
       box-shadow: 0 4px 10px var(--shadow-light);
     }
 
-    h1 {
-      color: var(--dark-text);
-      margin-bottom: 30px;
-      font-size: 2.8em;
+    .main-card {
+      background: var(--bg-primary);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+    }
+
+    .word-display {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .current-word {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .word-counter {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-accent);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
       font-weight: 700;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+      color: var(--text-primary);
+      display: block;
     }
 
-    .container {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 35px;
-      box-shadow: 0 15px 30px var(--shadow-medium);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .morse-input-section {
+      margin-bottom: 2rem;
+    }
+
+    .morse-input {
       width: 100%;
-      max-width: 900px;
-      margin-bottom: 30px;
-      border: 1px solid var(--light-border);
-    }
-
-    .top-section {
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 30px;
-      width: 100%;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 3.5em;
-      background: linear-gradient(145deg, #F9FBFC, #E0E7ED);
-      padding: 25px 45px;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px var(--shadow-light);
-      width: 280px;
-      height: 160px;
+      min-height: 4rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      text-transform: uppercase;
-      color: var(--primary-blue);
-      border: 2px solid var(--light-border);
-      font-weight: 600;
-      letter-spacing: 2px;
-      flex-shrink: 0;
+      transition: all 0.2s ease;
     }
 
-    .morse-input-display {
-      font-family: 'Roboto Mono', monospace;
-      width: calc(100% - 40px);
-      max-width: 500px;
+    .morse-input:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
+    }
+
+    .result-message {
       text-align: center;
-      font-size: 2.2em;
-      letter-spacing: 0.35em;
-      color: var(--dark-text);
-      margin: 25px auto;
-      min-height: 1.5em;
-      background: var(--light-bg);
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: inset 0 2px 5px var(--shadow-light);
-      border: 1px solid var(--light-border);
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-
-    #result {
-      font-size: 1.7em;
-      margin-bottom: 25px;
-      min-height: 1.5em;
+      padding: 1rem;
+      border-radius: var(--radius-sm);
       font-weight: 600;
-      transition: color 0.3s ease-in-out;
-    }
-
-    .buttons-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      width: 100%;
-      max-width: 450px;
-    }
-
-    button {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.2em;
-      padding: 15px 25px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background: linear-gradient(145deg, var(--white), #f0f0f0);
-      box-shadow: 0 5px 12px var(--shadow-light);
-      transition: all 0.3s ease;
-      color: var(--dark-text);
-      font-weight: 600;
-      border: 1px solid var(--light-border);
-    }
-
-    button:hover {
-      background: linear-gradient(145deg, #e0e0e0, #d0d0d0);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px var(--shadow-medium);
-    }
-
-    button:active {
-      transform: translateY(0);
-      box-shadow: inset 0 2px 5px var(--shadow-medium);
-    }
-
-    .button-group-vertical {
+      margin-bottom: 1.5rem;
+      min-height: 3rem;
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .result-success {
+      background: rgb(16 185 129 / 0.1);
+      color: var(--success);
+      border: 1px solid rgb(16 185 129 / 0.2);
+    }
+
+    .result-error {
+      background: rgb(239 68 68 / 0.1);
+      color: var(--error);
+      border: 1px solid rgb(239 68 68 / 0.2);
+    }
+
+    .controls {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .input-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .action-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .utility-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-accent);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-info {
+      background: var(--info);
+      color: white;
+    }
+
+    .btn-info:hover {
+      background: #0891b2;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
       align-items: center;
     }
 
-    .stats-box {
-      background-color: #F9FBFC;
-      border-radius: 15px;
-      padding: 20px 30px;
-      box-shadow: 0 6px 15px var(--shadow-light);
-      font-size: 1.05em;
-      text-align: left;
-      border: 1px solid var(--light-border);
-      line-height: 1.8;
-      color: var(--medium-text);
-    }
-
-    .stats-box span {
-      font-weight: 600;
-      color: var(--dark-text);
-    }
-
-    input[type="number"] {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 1.1em;
-      padding: 10px;
-      width: 90px;
-      border-radius: 8px;
-      border: 1px solid var(--light-border);
-      margin-left: 5px;
+    .input-field {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      width: 80px;
       text-align: center;
-      box-shadow: inset 0 1px 3px var(--shadow-light);
-      color: var(--dark-text);
+      font-family: 'Courier New', monospace;
+    }
+
+    .input-field:focus {
       outline: none;
-      transition: border-color 0.3s ease;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
     }
 
-    input[type="number"]:focus {
-      border-color: var(--primary-blue);
-      box-shadow: inset 0 1px 3px var(--shadow-light), 0 0 0 3px rgba(74, 144, 226, 0.2);
-    }
-
-    button.next-button {
-      background: linear-gradient(145deg, #6C63FF, #8B7EFF);
-      color: var(--white);
-      box-shadow: 0 6px 15px rgba(108, 99, 255, 0.3);
-      border: none;
+    .hint-display {
+      background: rgb(6 182 212 / 0.1);
+      border: 1px solid rgb(6 182 212 / 0.2);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
       position: relative;
-      overflow: hidden;
     }
-    button.next-button:hover {
-      background: linear-gradient(145deg, #8B7EFF, #A59BFF);
-      box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
-      transform: translateY(-2px);
+
+    .hint-content {
+      position: relative;
     }
-    button.next-button:before {
-      content: '';
+
+    .hint-header {
+      font-weight: 700;
+      color: var(--info);
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+    }
+
+    .hint-body {
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+      white-space: pre-line;
+    }
+
+    .hint-close {
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-    button.next-button:hover:before {
-      left: 100%;
-    }
-
-    button.check-button {
-      background: linear-gradient(145deg, var(--correct-green), #218838);
-      color: var(--white);
-      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
-      border: none;
-    }
-    button.check-button:hover {
-      background: linear-gradient(145deg, #218838, #1e7e34);
-      box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
-    }
-
-    button.clear-button {
-      background: linear-gradient(145deg, #ffc107, #e0a800);
-      color: var(--white);
-      box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
-      border: none;
-    }
-    button.clear-button:hover {
-      background: linear-gradient(145deg, #e0a800, #cc9a00);
-      box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
-    }
-
-    button.hint-button {
-      background: linear-gradient(145deg, #17a2b8, #138496);
-      color: var(--white);
-      box-shadow: 0 6px 15px rgba(23, 162, 184, 0.3);
-      border: none;
-      grid-column: 1 / -1;
-    }
-    button.hint-button:hover {
-      background: linear-gradient(145deg, #138496, #117a8b);
-      box-shadow: 0 8px 20px rgba(23, 162, 184, 0.4);
+      top: -0.5rem;
+      right: -0.5rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      padding: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      min-height: auto;
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.875rem;
     }
 
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2.2em;
+      .container {
+        padding: 1rem 0;
       }
-      .top-section {
-        flex-direction: column;
-        align-items: center;
+
+      .title {
+        font-size: 2rem;
       }
-      .card {
-        width: 100%;
-        max-width: 280px;
-        font-size: 3em;
+
+      .current-word {
+        font-size: 3rem;
       }
-      .morse-input-display {
-        font-size: 1.8em;
+
+      .card-header,
+      .card-body {
+        padding: 1.5rem;
       }
-      .buttons-grid {
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .input-controls {
         grid-template-columns: 1fr;
-        max-width: 300px;
       }
-      button {
-        padding: 12px 20px;
-        font-size: 1.1em;
+
+      .action-controls {
+        grid-template-columns: 1fr;
       }
-      .stats-box {
-        width: 100%;
-        max-width: 280px;
+
+      .utility-controls {
+        flex-direction: column;
       }
-      .version-badge {
-        top: 15px;
-        right: 15px;
-        padding: 6px 12px;
-        font-size: 0.8em;
+
+      .morse-input {
+        font-size: 1.25rem;
       }
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 20px 10px;
+      .current-word {
+        font-size: 2.5rem;
       }
-      h1 {
-        font-size: 1.8em;
-        margin-bottom: 20px;
+
+      .morse-input {
+        font-size: 1rem;
+        min-height: 3rem;
       }
-      .container {
-        padding: 25px 15px;
-      }
-      .morse-input-display {
-        font-size: 1.5em;
-        margin: 15px auto;
-      }
-      .card {
-        font-size: 2.5em;
-        height: 140px;
-        padding: 20px 30px;
-      }
-      .buttons-grid {
-        gap: 15px;
-      }
-      button {
-        font-size: 1em;
+
+      .stats-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="version-badge">V1</div>
-  <h1>Morse Code Practice</h1>
-
   <div class="container">
-    <div class="top-section">
-      <div class="stats-box">
-        ✅ Correct: <span id="correctCount">0</span><br>
-        ❌ Incorrect: <span id="incorrectCount">0</span><br>
-        🔢 Total: <span id="totalCount">0</span><br>
-        📖 Word: <span id="wordNumber">1</span> / <span id="wordTotal">?</span>
-      </div>
+    <div class="version-badge">v2</div>
+    
+    <header class="header">
+    <header class="header">
+      <h1 class="title">Morse Practice</h1>
+      <p class="subtitle">Learn Morse code with interactive practice</p>
+    </header>
 
-      <div class="card" id="wordCard">WORD</div>
+    <main class="main-card">
+      <div class="card-header">
+        <div class="word-display">
+          <div class="current-word" id="wordCard">WORD</div>
+          <div class="word-counter">
+            Word <span id="wordNumber">1</span> of <span id="wordTotal">?</span>
+          </div>
+        </div>
 
-      <div class="button-group-vertical">
-        <button onclick="showHint()" class="hint-button">💡 Show Hint</button>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-          <input type="number" id="gotoInput" placeholder="#" min="1" />
-          <button onclick="goToWord()">📍 Go To Word</button>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-value" id="correctCount">0</span>
+            <span class="stat-label">Correct</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="incorrectCount">0</span>
+            <span class="stat-label">Incorrect</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="totalCount">0</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="accuracy">0%</span>
+            <span class="stat-label">Accuracy</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="morse-input-display" id="userInput"></div>
-    <div id="result"></div>
+      <div class="card-body">
+        <div class="morse-input-section">
+          <div class="morse-input" id="userInput">
+            Click Dot or Dash to start...
+          </div>
+        </div>
 
-    <div class="buttons-grid">
-      <button onclick="addSymbol('.')">• Dot</button>
-      <button onclick="addSymbol('-')">– Dash</button>
-      <button onclick="clearInput()" class="clear-button">🧹 Clear Input</button>
-      <button onclick="checkAnswer()" class="check-button">✅ Check Answer</button>
-      <button onclick="nextWord()" class="next-button">➡️ Next Word</button>
+        <div class="result-message" id="result"></div>
+        
+        <div class="hint-display" id="hintDisplay" style="display: none;">
+          <div class="hint-content">
+            <div class="hint-header">💡 Hint</div>
+            <div class="hint-body" id="hintBody"></div>
+            <button class="btn btn-secondary hint-close" onclick="hideHint()">×</button>
+          </div>
+        </div>
 
-    </div>
+        <div class="controls">
+          <div class="input-controls">
+            <button class="btn btn-primary" onclick="addSymbol('.')">
+              <span>•</span> Dot
+            </button>
+            <button class="btn btn-primary" onclick="addSymbol('-')">
+              <span>–</span> Dash
+            </button>
+          </div>
+
+          <div class="action-controls">
+            <button class="btn btn-warning" onclick="clearInput()">
+              ✕ Clear
+            </button>
+            <button class="btn btn-success" onclick="checkAnswer()">
+              ✓ Check
+            </button>
+            <button class="btn btn-primary" onclick="nextWord()">
+              → Next
+            </button>
+          </div>
+
+          <div class="utility-controls">
+            <button class="btn btn-info" onclick="showHint()">
+              💡 Hint
+            </button>
+            <div class="input-group">
+              <input type="number" class="input-field" id="gotoInput" placeholder="Word #" min="1" />
+              <button class="btn btn-secondary" onclick="goToWord()">
+                Go
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
   </div>
-  <div class="name-badge">Ib-ra</div>
-
 
   <script>
     const words = [
     "eat", "tea", "ate", "tie", "tai", "tei", "ait", "mat", "met", "team",
+    "mate", "meet", "mitt", "meat", "aim", "tame", "same", "sat", "sit", "set",
+    "steam", "teams", "meats", "meets", "mates", "mats", "ties", "eats", "aims", "some",
+    "toss", "time", "mom", "sometimes", "osmosis", "moss", "moose", "tomato", "home", "hot",
+    "hat", "ham", "shoot", "shot", "mosh", "mash", "stash", "hash", "home", "homes",
+    "moth", "math", "the", "son", "nose", "net", "not", "note", "tent", "someone",
+    "mint", "hint", "stone", "moan", "honest", "cat", "come", "can", "mathematics", "sonic",
+    "tonic", "chase", "match", "hatch", "mooch", "notch", "cash", "car", "rat", "rice",
+    "ear", "racecar", "ran", "cram", "crash", "harm", "monitor", "roam", "runner", "rutter",
+    "hotter", "dad", "date", "dot", "dash", "crashed", "honed", "minted", "diminish", "credit",
+    "honored", "crush", "minute", "dust", "crust", "crusade", "crude", "dock", "make", "rock",
+    "ruckus", "crude", "kook", "rookie", "duck", "crudite", "hunk", "think", "shock", "lake",
+    "let", "land", "lose", "small", "lost", "clock", "lock", "luck", "lunch", "drool",
+    "loud", "angel", "angle", "llama", "fake", "fat", "fun", "fur", "fast", "fluff",
+    "fluke", "flustered", "ruffle", "duffle", "bat", "ball", "but", "black", "blast", "back",
+    "backside", "curb", "basketball", "baseball", "ballet", "bottle", "bumble", "babble", "better", "rumble",
+    "pet", "pal", "help", "up", "plaster", "crumple", "postmark", "pretend", "pub", "lump",
+    "bump", "dump", "hump", "prescribed", "great", "get", "game", "gain", "dog", "big",
+    "gaping", "paging", "page", "baggage", "package", "rampage", "jump", "jet", "juggle", "jacket",
+    "jaguar", "japan", "jam", "jetpack", "jungle", "van", "vet", "vacuum", "vacant", "pave",
+    "vampire", "volcano", "question", "quick", "quit", "quilt", "quadratic", "quantum", "quaint", "query",
+    "quail", "squat", "squad", "equal", "with", "water", "wear", "what", "weather", "jaw",
+    "paw", "weekend", "week", "wave", "waffle", "guffaw", "beeswax", "wax", "tax", "apex",
+    "axel", "flax", "jinx", "boxed", "boxer", "toxic", "detox", "exile", "exit", "very",
+    "yes", "jelly", "jellyfish", "walkway", "yesterday", "zipper", "zebra", "dizzy", "graze", "zesty",
+    "razer", "brazil", "zone", "jazz", "zero", "tee", "tie", "it", "ite", "eit",
+    "mat", "met", "team", "mate", "meet", "mitt", "meat", "aim", "tame", "mime",
+    "item", "me", "meta", "time", "same", "sat", "sit", "set", "steam", "teams",
+    "seem", "seam", "aims", "eats", "miss", "mist", "esteem", "steer", "seat", "some",
+    "toss", "time", "mom", "sometimes", "osmosis", "moss", "moose", "tomato", "too", "to",
+    "so", "soot", "moot", "moat", "miso", "home", "hot", "hat", "ham", "shoot",
+    "shot", "mosh", "mash", "stash", "hash", "home", "homes", "moth", "math", "host",
+    "teeth", "seethe", "hoot", "hoist", "heist", "haste", "soothe", "oh", "the", "son",
     "nose", "net", "not", "note", "tent", "someone"
   ];
+    
     const morseCode = {
       A: ".-", B: "-...", C: "-.-.", D: "-..", E: ".",
       F: "..-.", G: "--.", H: "....", I: "..", J: ".---",
@@ -414,7 +601,11 @@
 
     function addSymbol(symbol) {
       userInput += symbol;
-      document.getElementById("userInput").innerText += symbol + ' ';
+      const inputDisplay = document.getElementById("userInput");
+      if (userInput.length === 1) {
+        inputDisplay.innerText = "";
+      }
+      inputDisplay.innerText += symbol + " ";
       playBeep(symbol);
     }
 
@@ -424,7 +615,7 @@
       const gainNode = ctx.createGain();
       oscillator.type = "sine";
       oscillator.frequency.value = 600;
-      gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+      gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
       oscillator.connect(gainNode);
       gainNode.connect(ctx.destination);
       oscillator.start();
@@ -441,16 +632,18 @@
       totalCount++;
 
       const cleanedUserInput = userInput.replace(/ /g, '').trim();
-      const cleanedTarget = target.replace(/ /g, '').trim(); // Ensure target is also cleaned
+      const cleanedTarget = target.replace(/ /g, '').trim();
 
+      resultElement.className = "result-message";
+      
       if (cleanedUserInput === cleanedTarget) {
         correctCount++;
-        resultElement.innerText = "✅ Correct! Good job!";
-        resultElement.style.color = "var(--correct-green)";
+        resultElement.innerText = "✓ Correct! Well done!";
+        resultElement.classList.add("result-success");
       } else {
         incorrectCount++;
-        resultElement.innerText = `❌ Incorrect. Correct was: ${target}`;
-        resultElement.style.color = "var(--incorrect-red)";
+        resultElement.innerText = "✗ Incorrect. Try again or use the hint!";
+        resultElement.classList.add("result-error");
       }
 
       updateStats();
@@ -458,14 +651,18 @@
 
     function clearInput() {
       userInput = "";
-      document.getElementById("userInput").innerText = "";
-      document.getElementById("result").innerText = "";
-      document.getElementById("result").style.color = "var(--dark-text)"; // Reset result text color
+      const inputDisplay = document.getElementById("userInput");
+      inputDisplay.innerText = "Click Dot or Dash to start...";
+      const resultElement = document.getElementById("result");
+      resultElement.innerText = "";
+      resultElement.className = "result-message";
+      hideHint();
     }
 
     function nextWord() {
       currentIndex = (currentIndex + 1) % words.length;
       updateCard();
+      hideHint();
     }
 
     function goToWord() {
@@ -473,23 +670,56 @@
       if (!isNaN(input) && input >= 1 && input <= words.length) {
         currentIndex = input - 1;
         updateCard();
+        document.getElementById("gotoInput").value = '';
       } else {
-        alert(`Please enter a valid number between 1 and ${words.length}`);
-        document.getElementById("gotoInput").value = ''; // Clear invalid input
+        alert(`Please enter a number between 1 and ${words.length}`);
+        document.getElementById("gotoInput").value = '';
       }
     }
 
     function showHint() {
       const currentWord = words[currentIndex].toUpperCase();
-      let hint = currentWord.split('').map(l => `${l}: ${morseCode[l] || '?'}`).join(', ');
-      alert("💡 Hint:\n" + hint);
+      const morseAnswer = getMorse(words[currentIndex]);
+      let letterHints = currentWord.split('').map(l => `${l}: ${morseCode[l] || '?'}`).join('\n');
+      
+      const hintBody = document.getElementById("hintBody");
+      hintBody.textContent = `Word: ${currentWord}\n\n${letterHints}\n\nComplete answer: ${morseAnswer}`;
+      
+      document.getElementById("hintDisplay").style.display = "block";
+    }
+
+    function hideHint() {
+      document.getElementById("hintDisplay").style.display = "none";
     }
 
     function updateStats() {
       document.getElementById("correctCount").innerText = correctCount;
       document.getElementById("incorrectCount").innerText = incorrectCount;
       document.getElementById("totalCount").innerText = totalCount;
+      
+      const accuracy = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+      document.getElementById("accuracy").innerText = accuracy + "%";
     }
+
+    // Keyboard support
+    document.addEventListener('keydown', function(e) {
+      if (e.key === '.') {
+        e.preventDefault();
+        addSymbol('.');
+      } else if (e.key === '-') {
+        e.preventDefault();
+        addSymbol('-');
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        checkAnswer();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        clearInput();
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        nextWord();
+      }
+    });
 
     // Initialize
     updateCard();
